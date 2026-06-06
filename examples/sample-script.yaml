@@ -1,0 +1,99 @@
+meta:
+  title: 旧车站来信
+  original_type: novel
+  target_format: screenplay_yaml
+  synopsis: 林澈收到匿名信后，与记者许晚追查姐姐林岚失踪真相。
+  tone: 悬疑、冷峻
+source_chapters:
+  - id: chapter_1
+    title: 第一章 雨夜来信
+    summary: 林澈在旧车站收到匿名信和姐姐失踪前的照片。
+    key_events:
+      - 匿名信出现
+      - 照片背面指向地下档案室
+  - id: chapter_2
+    title: 第二章 钥匙编号
+    summary: 林澈发现钥匙编号与姐姐失踪日期一致，许晚识别出档案馆线索。
+    key_events:
+      - 黄铜钥匙出现
+      - 0719 指向旧档案馆地下库房
+  - id: chapter_3
+    title: 第三章 地下档案室
+    summary: 林澈和许晚潜入地下档案室，发现火灾调查报告。
+    key_events:
+      - 打开 0719 号柜
+      - 报告暗示林岚并非失踪
+characters:
+  - id: lin_che
+    name: 林澈
+    role: 主角
+    motivation: 找到姐姐失踪真相
+    traits:
+      - 克制
+      - 执着
+  - id: xu_wan
+    name: 许晚
+    role: 记者
+    motivation: 追查旧档案馆火灾背后的隐情
+    traits:
+      - 敏锐
+      - 果断
+scenes:
+  - id: scene_1
+    source_chapter_ids:
+      - chapter_1
+    location: 旧车站候车厅
+    time: 雨夜
+    purpose: 建立主线谜题并引出林岚失踪案
+    characters:
+      - 林澈
+    beats:
+      - 林澈发现匿名信
+      - 照片背面写着地下档案室
+    actions:
+      - character: 林澈
+        description: 他把信纸按在湿冷长椅上，反复确认信封没有署名。
+        camera: 特写照片背面的字迹
+    dialogue:
+      - character: 林澈
+        line: 你到底想让我知道什么？
+        emotion: 压抑
+        subtext: 他意识到姐姐的旧案被重新打开
+    mood: 潮湿、紧张
+    transition: 切至黄铜钥匙特写
+    notes: 可增加远处监视者的镜头强化悬疑感。
+  - id: scene_2
+    source_chapter_ids:
+      - chapter_2
+      - chapter_3
+    location: 旧档案馆地下库房
+    time: 深夜
+    purpose: 推进调查并抛出反转信息
+    characters:
+      - 林澈
+      - 许晚
+    beats:
+      - 许晚确认 0719 号柜位置
+      - 林澈打开柜门
+      - 两人发现火灾调查报告
+    actions:
+      - character: 许晚
+        description: 她用手电扫过一排生锈柜门，停在 0719 的铭牌前。
+        camera: 手持镜头跟随光束移动
+      - character: 林澈
+        description: 他抽出被烧焦的报告，手指停在最后一行字上。
+    dialogue:
+      - character: 许晚
+        line: 这不是失踪案，这是有人把她从记录里抹掉了。
+        emotion: 震惊
+        subtext: 她开始怀疑档案馆内部有人参与
+      - character: 林澈
+        line: 如果她没失踪，那她现在在哪？
+        emotion: 低声
+        subtext: 希望和恐惧同时出现
+    mood: 阴冷、压迫
+    transition: 应急灯熄灭
+    notes: 结尾可留黑场音效，为下一场追逐做准备。
+revision_notes:
+  - 强化林岚在前三章中的存在感。
+  - 后续版本补充寄信人的误导线索。
