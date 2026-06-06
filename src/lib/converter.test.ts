@@ -119,6 +119,46 @@ describe("convertNovelToScript", () => {
     expect(result.yaml).toContain("source_chapters:");
   });
 
+  it("normalizes common AI YAML variants before validation", () => {
+    const looseYaml = `
+meta:
+  title: 松散格式剧本
+  summary: 主角收到线索并追查旧案。
+chapters:
+  - title: 第一章
+    summary: 主角收到匿名信。
+    events: 匿名信出现
+  - title: 第二章
+    summary: 主角发现钥匙。
+    events:
+      - 钥匙编号出现
+  - title: 第三章
+    summary: 主角进入档案室。
+    events:
+      - 火灾报告出现
+characters:
+  - name: 林澈
+    role: 主角
+scenes:
+  - chapter_id: chapter_1
+    setting: 旧车站
+    time_of_day: 雨夜
+    summary: 林澈读到匿名信。
+    action:
+      - 林澈展开湿透的信纸。
+    dialogues:
+      - speaker: 林澈
+        text: 你到底想让我知道什么？
+`;
+
+    const result = parseAndValidateScriptYaml(looseYaml);
+
+    expect(result.script.meta.original_type).toBe("novel");
+    expect(result.script.source_chapters).toHaveLength(3);
+    expect(result.script.scenes[0].actions[0].description).toContain("信纸");
+    expect(result.script.scenes[0].dialogue[0].character).toBe("林澈");
+  });
+
   it("parses the repository sample YAML", () => {
     const sampleYaml = readFileSync(
       join(process.cwd(), "examples", "sample-script.yaml"),
