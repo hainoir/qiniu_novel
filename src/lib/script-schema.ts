@@ -81,6 +81,10 @@ export const scriptYamlSchema = z.object({
         mood: z.string().min(1),
         transition: z.string().optional(),
         notes: z.string().optional(),
+        visual_summary: z.string().optional(),
+        estimated_screen_time: z.string().optional(),
+        key_visuals: z.array(z.string().min(1)).optional(),
+        shot_suggestions: z.array(z.string().min(1)).optional(),
       }),
     )
     .min(1),
@@ -290,6 +294,16 @@ function normalizeScriptYaml(parsed: unknown) {
         "待定",
       transition: optionalString(rawScene.transition),
       notes: optionalString(rawScene.notes ?? rawScene.note),
+      visual_summary: optionalString(
+        rawScene.visual_summary ?? rawScene.visualSummary,
+      ),
+      estimated_screen_time: optionalString(
+        rawScene.estimated_screen_time ?? rawScene.estimatedScreenTime,
+      ),
+      key_visuals: stringArray(rawScene.key_visuals ?? rawScene.keyVisuals),
+      shot_suggestions: stringArray(
+        rawScene.shot_suggestions ?? rawScene.shotSuggestions,
+      ),
     };
   });
 
