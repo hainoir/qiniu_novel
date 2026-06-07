@@ -96,9 +96,11 @@ Windows PowerShell 可手动复制 `.env.example` 为 `.env.local`。
 AI_BASE_URL=https://api.openai.com/v1
 AI_MODEL=gpt-4.1-mini
 AI_API_KEY=replace_with_your_key
+AI_MAX_OUTPUT_TOKENS=4096
 ```
 
 `AI_BASE_URL` 应填写 OpenAI 兼容接口的 `v1` 地址。如果服务商直接提供 `/chat/completions` 完整地址，也可以直接填写该地址。
+`AI_MAX_OUTPUT_TOKENS` 可选，用于控制剧本 YAML 生成时的最大输出长度；长文本生成为空或被截断时可适当调高。
 
 ## 测试与构建
 

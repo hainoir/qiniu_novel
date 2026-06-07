@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { convertNovelToScript } from "./converter";
+import {
+  buildScriptPrompt,
+  compactNovelContentForPrompt,
+  convertNovelToScript,
+} from "./converter";
 import { ScriptAIClient } from "./ai-client";
 import { ConversionError } from "./errors";
 import { parseAndValidateScriptYaml } from "./script-schema";
@@ -117,6 +121,38 @@ describe("convertNovelToScript", () => {
     expect(result.script.meta.title).toBe("旧车站来信");
     expect(result.script.source_chapters).toHaveLength(3);
     expect(result.yaml).toContain("source_chapters:");
+  });
+
+  it("compacts oversized chapter text before building the AI prompt", () => {
+    const longContent =
+      "开头线索" +
+      "甲".repeat(7000) +
+      "中段转折" +
+      "乙".repeat(7000) +
+      "结尾悬念";
+
+    const compacted = compactNovelContentForPrompt(longContent, 1000);
+
+    expect(compacted.length).toBeLessThanOrEqual(1000);
+    expect(compacted).toContain("开头线索");
+    expect(compacted).toContain("中段转折");
+    expect(compacted).toContain("结尾悬念");
+    expect(compacted).toContain("原章节过长");
+  });
+
+  it("keeps multi-chapter prompt size bounded for long input", () => {
+    const longChapters = chapters.map((chapter, index) => ({
+      title: chapter.title,
+      content: `第${index + 1}章开头` + "正文".repeat(6000) + "章节结尾",
+    }));
+
+    const messages = buildScriptPrompt(longChapters);
+    const userPrompt = messages.find((message) => message.role === "user")
+      ?.content;
+
+    expect(userPrompt).toBeDefined();
+    expect(userPrompt?.length).toBeLessThan(14000);
+    expect(userPrompt).toContain("原章节过长");
   });
 
   it("normalizes common AI YAML variants before validation", () => {
