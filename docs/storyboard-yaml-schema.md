@@ -1,9 +1,9 @@
 # 分镜 YAML Schema
 
-分镜 YAML 是剧本 YAML 的下一层结构，用于把剧本场景拆成可被 AI 视频生成模型理解的镜头单元。它不替代剧本 Schema，而是服务以下转换链路：
+分镜 YAML 是剧本 YAML 的下一层结构，用于把剧本场景拆成可被 AI 视频化创作流程理解的镜头单元。它不替代剧本 Schema，而是服务以下转换链路：
 
 ```text
-script_yaml -> storyboard_yaml -> video_generation_jobs
+script_yaml -> storyboard_yaml
 ```
 
 ## 顶层结构
@@ -54,7 +54,7 @@ scenes:
 | `characters[].costume` | string | 是 | 服装设定，用于视频生成参考。 |
 | `characters[].continuity_notes` | string | 是 | 角色连续性说明，减少不同镜头角色漂移。 |
 | `scenes[].source_scene_id` | string | 是 | 来源剧本场景 ID，保证可追溯。 |
-| `shots[].shot_id` | string | 是 | 镜头 ID，也是后续视频任务的来源。 |
+| `shots[].shot_id` | string | 是 | 镜头 ID，用于定位和编辑具体镜头。 |
 | `shots[].duration_seconds` | number | 是 | 镜头建议时长，通常 4 到 12 秒。 |
 | `shots[].shot_size` | enum | 是 | 景别，例如特写、中景、远景。 |
 | `shots[].camera_angle` | enum | 是 | 机位角度。 |
@@ -69,7 +69,7 @@ scenes:
 ## 设计原因
 
 1. `source_scene_id` 让每个分镜可以追溯回剧本场景，方便作者核对改编依据。
-2. `shots` 是视频生成的最小生产单元，后续可以一镜一任务地生成短片段。
+2. `shots` 是视频化分镜的最小生产单元，方便后续逐镜头编辑或适配生成流程。
 3. `duration_seconds`、`aspect_ratio`、`visual_prompt` 和 `negative_prompt` 直接面向视频模型输入。
 4. `characters[].continuity_notes` 把角色一致性前置，降低多镜头生成时角色漂移的概率。
 5. `camera_angle` 和 `camera_movement` 把文学动作转换为镜头语言，帮助模型理解画面调度。

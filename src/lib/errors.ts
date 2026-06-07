@@ -2,6 +2,7 @@ export type ConversionErrorCode =
   | "invalid_request"
   | "missing_ai_config"
   | "ai_request_failed"
+  | "empty_ai_response"
   | "invalid_yaml"
   | "invalid_schema";
 

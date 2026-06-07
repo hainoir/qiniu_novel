@@ -80,7 +80,7 @@ export function buildStoryboardPrompt(script: ScriptYaml): ChatMessage[] {
     {
       role: "system",
       content:
-        "你是 AI 漫剧分镜导演，擅长把剧本场景拆成可被视频生成模型理解的镜头任务。",
+        "你是 AI 漫剧分镜导演，擅长把剧本场景拆成可被视频生成模型理解的镜头单元。",
     },
     {
       role: "user",
