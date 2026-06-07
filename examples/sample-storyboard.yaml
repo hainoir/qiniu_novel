@@ -1,0 +1,75 @@
+meta:
+  title: 旧车站来信
+  format: ai_comic_drama
+  target_platform: douyin
+  aspect_ratio: "9:16"
+  visual_style: 2D anime cinematic comic drama, cold rainy suspense tone
+characters:
+  - id: lin_che
+    name: 林澈
+    appearance: 24 岁青年，短黑发，面部线条清瘦，神情克制
+    costume: 黑色长风衣，深色衬衫，旧皮包
+    continuity_notes: 每个镜头保持短黑发、黑色长风衣和压抑神情
+  - id: xu_wan
+    name: 许晚
+    appearance: 26 岁记者，利落短发，眼神敏锐
+    costume: 灰色夹克，斜挎相机包
+    continuity_notes: 保持短发、灰色夹克和随身相机包
+scenes:
+  - id: storyboard_scene_1
+    source_scene_id: scene_1
+    location: 旧车站候车厅
+    time: 雨夜
+    mood: 潮湿、紧张、悬疑
+    shots:
+      - shot_id: shot_001
+        duration_seconds: 6
+        shot_size: wide_shot
+        camera_angle: eye_level
+        camera_movement: static
+        composition: 林澈位于画面右下角，空旷候车厅占据大部分画面，玻璃外雨水密集
+        subject: 林澈
+        action: 林澈独自坐在旧车站长椅上，低头看着手中的匿名信
+        dialogue_or_voiceover: ""
+        visual_prompt: 竖屏 2D 动漫风格，雨夜旧车站候车厅，冷色灯光，林澈穿黑色长风衣坐在长椅上阅读匿名信，画面空旷压抑，悬疑氛围
+        negative_prompt: blurry, low quality, distorted hands, unreadable text, extra fingers
+      - shot_id: shot_002
+        duration_seconds: 8
+        shot_size: close_up
+        camera_angle: eye_level
+        camera_movement: push_in
+        composition: 匿名信和照片占据画面中心，林澈的手指压住湿透的纸角
+        subject: 匿名信
+        action: 林澈展开湿透的信纸，照片背面露出“地下档案室”字样
+        dialogue_or_voiceover: 林澈：你到底想让我知道什么？
+        visual_prompt: 竖屏 2D 动漫特写镜头，湿透的匿名信和旧照片，林澈手指压住纸角，冷色雨夜反光，镜头缓慢推近，悬疑漫画质感
+        negative_prompt: blurry text, malformed fingers, watermark, logo, low contrast
+  - id: storyboard_scene_2
+    source_scene_id: scene_2
+    location: 旧档案馆地下库房
+    time: 深夜
+    mood: 阴冷、压迫、危险
+    shots:
+      - shot_id: shot_003
+        duration_seconds: 8
+        shot_size: medium_shot
+        camera_angle: low_angle
+        camera_movement: tracking
+        composition: 手电光束从画面左侧扫向右侧，0719 号柜门在画面中心显现
+        subject: 许晚和林澈
+        action: 许晚用手电照向生锈柜门，林澈站在她身后屏住呼吸
+        dialogue_or_voiceover: 许晚：编号就是这里。
+        visual_prompt: 竖屏 2D 动漫风格，旧档案馆地下库房，手电光束扫过生锈铁柜，许晚穿灰色夹克，林澈穿黑色长风衣，低机位跟拍，紧张悬疑
+        negative_prompt: blurry, extra limbs, inconsistent character, bad anatomy, text artifacts
+      - shot_id: shot_004
+        duration_seconds: 8
+        shot_size: extreme_close_up
+        camera_angle: eye_level
+        camera_movement: static
+        composition: 烧焦报告的最后一行文字位于画面下方，林澈瞳孔倒映纸面火痕
+        subject: 火灾调查报告
+        action: 林澈抽出烧焦报告，看到“林岚并非失踪”
+        dialogue_or_voiceover: 林澈：如果她没失踪，那她现在在哪？
+        visual_prompt: 竖屏 2D 动漫极近特写，烧焦的火灾调查报告，纸面焦黑边缘，林澈眼中倒映文字，阴冷地下室光线，强悬疑反转
+        negative_prompt: unreadable text, blurry, distorted eyes, low quality, watermark
+
