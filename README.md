@@ -2,7 +2,7 @@
 
 题目三：AI 小说转剧本工具。项目面向希望把小说改编成 AI 漫剧、AI 短剧或动态漫画的作者，支持粘贴 3 个章节以上的小说文本，并通过 OpenAI 兼容接口生成结构化 YAML 剧本初稿，再进一步生成分镜 YAML。
 
-Demo 视频：录制完成后填写外部可访问链接，提交前必须替换此行。
+Demo 视频：[Bilibili](https://www.bilibili.com/video/BV1BJEb6oEbm)。
 
 ## 项目定位
 
