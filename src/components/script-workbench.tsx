@@ -5,7 +5,6 @@ import {
   Copy,
   Download,
   FileText,
-  Film,
   Loader2,
   Plus,
   RefreshCcw,
@@ -22,11 +21,13 @@ type ChapterState = {
   content: string;
 };
 
-type StageKey = "script" | "storyboard" | "video";
+type StageKey = "script" | "storyboard";
 
 type ConvertResponse = {
   yaml?: string;
   error?: string;
+  code?: string;
+  details?: unknown;
 };
 
 type StagePanelProps = {
@@ -88,6 +89,40 @@ function downloadText(value: string, filename: string) {
   link.download = filename;
   link.click();
   URL.revokeObjectURL(url);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function formatDiagnosticDetails(details: unknown) {
+  if (!isRecord(details)) {
+    return "";
+  }
+
+  const detailKeys = [
+    "finish_reason",
+    "message_content_type",
+    "has_reasoning_content",
+    "has_refusal",
+    "choice_count",
+    "output_count",
+  ];
+  const parts = detailKeys.flatMap((key) => {
+    const value = details[key];
+
+    if (value === undefined) {
+      return [];
+    }
+
+    return `${key}: ${String(value)}`;
+  });
+
+  return parts.length > 0 ? `（诊断：${parts.join("；")}）` : "";
+}
+
+function formatResponseError(data: ConvertResponse) {
+  return `${data.error ?? "生成失败"}${formatDiagnosticDetails(data.details)}`;
 }
 
 function StagePanel({
@@ -161,7 +196,7 @@ function StagePanel({
 
         {error ? (
           <div
-            className="rounded-md border border-[#f0b8bd] bg-[#fff5f5] px-3 py-2 text-sm text-[#7b2430]"
+            className="break-words rounded-md border border-[#f0b8bd] bg-[#fff5f5] px-3 py-2 text-sm text-[#7b2430]"
             role="alert"
           >
             {error}
@@ -184,11 +219,9 @@ export function ScriptWorkbench() {
   const [chapters, setChapters] = useState<ChapterState[]>(initialChapters);
   const [scriptYaml, setScriptYaml] = useState("");
   const [storyboardYaml, setStoryboardYaml] = useState("");
-  const [videoJobsYaml, setVideoJobsYaml] = useState("");
   const [errors, setErrors] = useState<Record<StageKey, string>>({
     script: "",
     storyboard: "",
-    video: "",
   });
   const [loadingStage, setLoadingStage] = useState<StageKey | null>(null);
 
@@ -235,8 +268,7 @@ export function ScriptWorkbench() {
     setChapters(sampleChapters);
     setScriptYaml("");
     setStoryboardYaml("");
-    setVideoJobsYaml("");
-    setErrors({ script: "", storyboard: "", video: "" });
+    setErrors({ script: "", storyboard: "" });
   }
 
   async function postYaml(endpoint: string, body: unknown) {
@@ -248,7 +280,7 @@ export function ScriptWorkbench() {
     const data = (await response.json()) as ConvertResponse;
 
     if (!response.ok || !data.yaml) {
-      throw new Error(data.error ?? "生成失败");
+      throw new Error(formatResponseError(data));
     }
 
     return data.yaml;
@@ -271,8 +303,7 @@ export function ScriptWorkbench() {
       });
       setScriptYaml(yaml);
       setStoryboardYaml("");
-      setVideoJobsYaml("");
-      setErrors({ script: "", storyboard: "", video: "" });
+      setErrors({ script: "", storyboard: "" });
     } catch (requestError) {
       setStageError(
         "script",
@@ -292,34 +323,10 @@ export function ScriptWorkbench() {
         script_yaml: scriptYaml,
       });
       setStoryboardYaml(yaml);
-      setVideoJobsYaml("");
-      setStageError("video", "");
     } catch (requestError) {
       setStageError(
         "storyboard",
         requestError instanceof Error ? requestError.message : "分镜生成失败",
-      );
-    } finally {
-      setLoadingStage(null);
-    }
-  }
-
-  async function generateVideoJobs() {
-    setLoadingStage("video");
-    setStageError("video", "");
-
-    try {
-      const yaml = await postYaml("/api/video-jobs", {
-        storyboard_yaml: storyboardYaml,
-        provider: "generic",
-      });
-      setVideoJobsYaml(yaml);
-    } catch (requestError) {
-      setStageError(
-        "video",
-        requestError instanceof Error
-          ? requestError.message
-          : "视频任务生成失败",
       );
     } finally {
       setLoadingStage(null);
@@ -339,7 +346,7 @@ export function ScriptWorkbench() {
                 AI 小说转剧本工具
               </h1>
               <p className="text-sm text-[#5c6675]">
-                小说 · 剧本 · 分镜 · 视频任务
+                小说 · 剧本 · 分镜
               </p>
             </div>
           </div>
@@ -436,11 +443,6 @@ export function ScriptWorkbench() {
               <span>剧本 YAML</span>
               <span>→</span>
               <span>分镜 YAML</span>
-              <span>→</span>
-              <span className="inline-flex items-center gap-2">
-                <Film aria-hidden="true" size={16} />
-                video_generation_jobs
-              </span>
             </div>
           </div>
 
@@ -470,21 +472,6 @@ export function ScriptWorkbench() {
             subtitle="剧本 YAML -> AI 漫剧分镜"
             title="分镜 YAML"
             value={storyboardYaml}
-          />
-
-          <StagePanel
-            actionLabel="生成视频任务"
-            disabled={!storyboardYaml}
-            error={errors.video}
-            filename="video-jobs.yaml"
-            isLoading={loadingStage === "video"}
-            onChange={setVideoJobsYaml}
-            onGenerate={generateVideoJobs}
-            placeholder="video_generation_jobs YAML 输出"
-            rowsClassName="min-h-[24rem]"
-            subtitle="分镜 YAML -> 可投递视频任务"
-            title="视频任务 YAML"
-            value={videoJobsYaml}
           />
         </div>
       </main>
